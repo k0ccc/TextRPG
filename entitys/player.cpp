@@ -1,5 +1,5 @@
 
-#include "entity.h"
+#include "entity.hpp"
 
 class Player : public Entity
 {
@@ -12,3 +12,4 @@ public:
 Player::Player(/* args */)
 {
 }
+ 
