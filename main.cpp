@@ -1,9 +1,9 @@
 
-#include "entitys/entity.h"
+#include "entitys/entity.hpp"
 
 int main()
 {
-  Entity test_(1, 1, "test", "test");
+  Entity test_;
   test_.Print();
   return 0;
 }
