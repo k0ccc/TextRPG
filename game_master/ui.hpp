@@ -4,7 +4,7 @@
 #ifdef _WIN32
   enum Color
   {
-    GREEN = 2,  // TALK
+    GREEN = 2,  // TALK - ACTION
     RED = 4,    // ATTACK
     YELLOW = 6, // INVETORY
     WHITE = 7   // TEXT
@@ -12,7 +12,7 @@
 #elif __linux__
   enum Color
   {
-    GREEN = 32,  // TALK
+    GREEN = 32,  // TALK - ACTION
     RED = 31,    // ATTACK
     YELLOW = 33, // INVETORY
     WHITE = 37   // TEXT
