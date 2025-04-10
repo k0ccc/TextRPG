@@ -1,6 +1,6 @@
 
 #ifdef _WIN32
-#include <conio.h>
+#include <ncurses/ncurses.h>
 #else 
 #include <curses.h>
 #endif
@@ -12,41 +12,54 @@ class Engine
 {
 private:
   bool isRunning_;
+
 public:
-  Engine(bool IsRunning);
+  Engine();
   void Run();
+  void InitCurses();
   void HandleInput();
   void Update();
   void Render();
-  void ClearConsole();
+  void CleanupCurses();
 };
 
-Engine::Engine(bool IsRunning) : isRunning_(IsRunning)
-{
 
-  
-}
+Engine::Engine(): isRunning_(false){}
+
+
 void Engine::Run()
 {
+  isRunning_ = true;
+  InitCurses();
   while (isRunning_)
   {
-    Update();
     HandleInput();
-    ClearConsole();
+    Update();
     Render();
   }
+  CleanupCurses();
+}
+
+void Engine::InitCurses()
+{
+  initscr();            // Инициализация ncurses
+  cbreak();             // Отключаем буферизацию строк (символы доступны сразу)
+  noecho();             // Не выводить нажатые символы автоматически
+  keypad(stdscr, TRUE); // Включаем обработку спец. клавиш (стрелки и т.д.)
+  curs_set(1);          // Показать курсор (0 - скрыть)
 }
 
 void Engine::HandleInput(){
-  std::cout << "To quit the game press 'q'" << std::endl;
-  if (_kbhit())
-  {                     // Проверяем, есть ли нажатие клавиши
-    char ch = _getch(); // Получаем нажатую клавишу
-    if (ch == 'q')
-    { // Например, 'q' для выхода
-      isRunning_ = false;
-    }
-    // Обработка других клавиш
+  int ch = getch();
+  switch (ch)
+  {
+  case 'q':
+  case 'Q':
+    isRunning_ = false;
+    break;
+  default:
+
+    break;
   }
 }
 
@@ -57,11 +70,21 @@ void Engine::Update()
 
 void Engine::Render()
 {
-  std::cout << "test" << std::endl;
   // Логика отрисовки текста и графики
+  erase(); // Очищаем виртуальный экран (аналог clear, но без мерцания)
+
+  // Используем функции ncurses для вывода в нужных координатах (y, x)
+  mvprintw(0, 0, "--- My text game ---");
+  mvprintw(2, 5, "Current location: Room 1");
+  mvprintw(3, 5, "Inv: Empty");
+  // ... вывод карты, лога сообщений ...
+
+  mvprintw(LINES - 1, 0, "Press (q - quit): "); // LINES - высота экрана
+
+  refresh(); // Обновляем реальный экран содержимым виртуального
 }
-// DEL  
-void Engine::ClearConsole()
+
+void Engine::CleanupCurses()
 {
-  system("cls");
+  endwin(); // Завершение работы с ncurses
 }

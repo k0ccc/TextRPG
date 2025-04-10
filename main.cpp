@@ -2,7 +2,7 @@
 #include "game_master/engine.hpp"
 int main()
 {
-  Engine engine(true);
+  Engine engine;
   engine.Run();
   return 0;
 }
