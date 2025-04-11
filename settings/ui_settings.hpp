@@ -1,65 +1,36 @@
-#include <iostream>
-#include <windows.h>
 
 #ifdef _WIN32
-  enum Color
-  {
-    GREEN = 2,  // TALK - ACTION
-    RED = 4,    // ATTACK
-    YELLOW = 6, // INVETORY
-    WHITE = 7   // TEXT
-  };
-#elif __linux__
-  enum Color
-  {
-    GREEN = 32,  // TALK - ACTION
-    RED = 31,    // ATTACK
-    YELLOW = 33, // INVETORY
-    WHITE = 37   // TEXT
-  };
+#include <ncurses/ncurses.h>
 #else
-  std::cout << "Your OS not supported" << std::endl;
-  std::cin.get();
-  exit(1);
+#include <curses.h>
 #endif
 
-
-enum OS {
-  WIN,
-  LINUX
+enum Color
+{
+  RED = 1,    // ATTACK
+  GREEN = 2,  // TALK - ACTION
+  YELLOW = 3, // INVETORY
+  WHITE = 4   // TEXT
 };
-
 class UserInterface
 {
 private:
-  OS os_;
-  Color printColor_;
-  HANDLE hConsole_;
+
 public:
   UserInterface();
-  void SetColor(Color color);
+  void SetColor(Color color) const;
 };
 
 UserInterface::UserInterface()
 {
-  #ifdef _WIN32
-    hConsole_ = GetStdHandle(STD_OUTPUT_HANDLE);
-    os_ = WIN;
-  #elif __linux__
-    os_ = LINUX;
-  #else
-    std::cout << "Your OS not supported" << std::endl;
-  #endif
+  start_color();
+  init_pair(1, COLOR_RED, COLOR_BLACK);   // Пара 1: красный текст на черном фоне
+  init_pair(2, COLOR_GREEN, COLOR_BLACK); // Пара 2: зеленый текст на черном фоне
+  init_pair(3, COLOR_YELLOW, COLOR_BLACK); // Пара 3: синий текст на черном фоне
+  init_pair(4, COLOR_WHITE, COLOR_BLACK); // Пара 4: белый текст на черном фоне
 }
 
-void UserInterface::SetColor(Color color)
+void UserInterface::SetColor(Color color) const
 {
-  
-  if (os_ == WIN)
-  {
-    SetConsoleTextAttribute(hConsole_, color);
-  }
-  else{
-    std::cout << "\033[" << color << "m";
-  }
+  attron(COLOR_PAIR(color));
 }

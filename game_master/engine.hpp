@@ -6,12 +6,14 @@
 #endif
 
 #include <iostream>
-#include <cstdlib>
+#include "../settings/ui_settings.hpp"
+#include <memory>
 
 class Engine
 {
 private:
   bool isRunning_;
+  std::unique_ptr<UserInterface> ui_settings_;
 
 public:
   Engine();
@@ -31,6 +33,7 @@ void Engine::Run()
 {
   isRunning_ = true;
   InitCurses();
+  ui_settings_ = std::make_unique<UserInterface>();
   while (isRunning_)
   {
     HandleInput();
@@ -51,14 +54,17 @@ void Engine::InitCurses()
 
 void Engine::HandleInput(){
   int ch = getch();
+  ui_settings_->SetColor(RED);
   switch (ch)
   {
   case 'q':
   case 'Q':
     isRunning_ = false;
     break;
+  case KEY_UP:
+    ui_settings_->SetColor(YELLOW);
+    break;
   default:
-
     break;
   }
 }
