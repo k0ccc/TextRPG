@@ -13,7 +13,7 @@ class Engine
 {
 private:
   bool isRunning_;
-  std::unique_ptr<UserInterface> ui_settings_;
+  std::unique_ptr<UserInterfaceSettings> ui_settings_;
 
 public:
   Engine();
@@ -33,12 +33,12 @@ void Engine::Run()
 {
   isRunning_ = true;
   InitCurses();
-  ui_settings_ = std::make_unique<UserInterface>();
+  ui_settings_ = std::make_unique<UserInterfaceSettings>();
   while (isRunning_)
   {
-    HandleInput();
     Update();
     Render();
+    HandleInput();
   }
   CleanupCurses();
 }
@@ -54,7 +54,6 @@ void Engine::InitCurses()
 
 void Engine::HandleInput(){
   int ch = getch();
-  ui_settings_->SetColor(RED);
   switch (ch)
   {
   case 'q':
@@ -62,7 +61,7 @@ void Engine::HandleInput(){
     isRunning_ = false;
     break;
   case KEY_UP:
-    ui_settings_->SetColor(YELLOW);
+    // ui_settings_->SetColor(YELLOW);
     break;
   default:
     break;
@@ -78,11 +77,10 @@ void Engine::Render()
 {
   // Логика отрисовки текста и графики
   erase(); // Очищаем виртуальный экран (аналог clear, но без мерцания)
-
   // Используем функции ncurses для вывода в нужных координатах (y, x)
-  mvprintw(0, 0, "--- My text game ---");
-  mvprintw(2, 5, "Current location: Room 1");
-  mvprintw(3, 5, "Inv: Empty");
+  ui_settings_->SetColor(0, 0, "--- My text game ---", RED);
+  ui_settings_->SetColor(2, 5, "Current location: Room 1", GREEN);
+  ui_settings_->SetColor(3, 5, "Inv: Empty", YELLOW);
   // ... вывод карты, лога сообщений ...
 
   mvprintw(LINES - 1, 0, "Press (q - quit): "); // LINES - высота экрана

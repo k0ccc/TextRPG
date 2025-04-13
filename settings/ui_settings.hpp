@@ -12,16 +12,16 @@ enum Color
   YELLOW = 3, // INVETORY
   WHITE = 4   // TEXT
 };
-class UserInterface
+class UserInterfaceSettings
 {
 private:
 
 public:
-  UserInterface();
-  void SetColor(Color color) const;
+  UserInterfaceSettings();
+  void SetColor(int y, int x, std::string text, Color color) const;
 };
 
-UserInterface::UserInterface()
+UserInterfaceSettings::UserInterfaceSettings()
 {
   start_color();
   init_pair(1, COLOR_RED, COLOR_BLACK);   // Пара 1: красный текст на черном фоне
@@ -30,7 +30,10 @@ UserInterface::UserInterface()
   init_pair(4, COLOR_WHITE, COLOR_BLACK); // Пара 4: белый текст на черном фоне
 }
 
-void UserInterface::SetColor(Color color) const
+// Функцию вынести в UI,нужно для изоляции цвета
+void UserInterfaceSettings::SetColor(int y, int x, std::string text, Color color) const
 {
   attron(COLOR_PAIR(color));
+  mvprintw(y, x, text.c_str());
+  attroff(COLOR_PAIR(color));
 }
