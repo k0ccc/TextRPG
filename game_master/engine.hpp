@@ -1,10 +1,4 @@
 
-#ifdef _WIN32
-#include <ncurses/ncurses.h>
-#else 
-#include <curses.h>
-#endif
-
 #include <iostream>
 #include "../settings/ui_settings.hpp"
 #include <memory>
@@ -33,7 +27,6 @@ void Engine::Run()
 {
   isRunning_ = true;
   InitCurses();
-  ui_settings_ = std::make_unique<UserInterfaceSettings>();
   while (isRunning_)
   {
     Update();
@@ -45,11 +38,7 @@ void Engine::Run()
 
 void Engine::InitCurses()
 {
-  initscr();            // Инициализация ncurses
-  cbreak();             // Отключаем буферизацию строк (символы доступны сразу)
-  noecho();             // Не выводить нажатые символы автоматически
-  keypad(stdscr, TRUE); // Включаем обработку спец. клавиш (стрелки и т.д.)
-  curs_set(1);          // Показать курсор (0 - скрыть)
+  ui_settings_ = std::make_unique<UserInterfaceSettings>();
 }
 
 void Engine::HandleInput(){
@@ -78,7 +67,7 @@ void Engine::Render()
   // Логика отрисовки текста и графики
   erase(); // Очищаем виртуальный экран (аналог clear, но без мерцания)
   // Используем функции ncurses для вывода в нужных координатах (y, x)
-  ui_settings_->SetColor(0, 0, "--- My text game ---", RED);
+  ui_settings_->SetColor(0, 0, "--- My text game ---");
   ui_settings_->SetColor(2, 5, "Current location: Room 1", GREEN);
   ui_settings_->SetColor(3, 5, "Inv: Empty", YELLOW);
   // ... вывод карты, лога сообщений ...
@@ -88,7 +77,7 @@ void Engine::Render()
   refresh(); // Обновляем реальный экран содержимым виртуального
 }
 
-void Engine::CleanupCurses()
+inline void Engine::CleanupCurses()
 {
   endwin(); // Завершение работы с ncurses
 }

@@ -1,9 +1,5 @@
 
-#ifdef _WIN32
-#include <ncurses/ncurses.h>
-#else
-#include <curses.h>
-#endif
+#include "../wrapper/libs.hpp"
 
 enum Color
 {
@@ -18,11 +14,16 @@ private:
 
 public:
   UserInterfaceSettings();
-  void SetColor(int y, int x, std::string text, Color color) const;
+  void SetColor(int y, int x, std::string text, Color color = WHITE) const;
 };
 
 UserInterfaceSettings::UserInterfaceSettings()
 {
+  initscr();            // Инициализация ncurses
+  cbreak();             // Отключаем буферизацию строк (символы доступны сразу)
+  noecho();             // Не выводить нажатые символы автоматически
+  keypad(stdscr, TRUE); // Включаем обработку спец. клавиш (стрелки и т.д.)
+  curs_set(1);          // Показать курсор (0 - скрыть)
   start_color();
   init_pair(1, COLOR_RED, COLOR_BLACK);   // Пара 1: красный текст на черном фоне
   init_pair(2, COLOR_GREEN, COLOR_BLACK); // Пара 2: зеленый текст на черном фоне

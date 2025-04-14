@@ -42,7 +42,7 @@ Entity::Entity(int hp, int atk, std::string name, std::string description) : hp_
 
 // Buff methods
 
-void Buff::applyBuff(Entity &Entity)
+inline void Buff::applyBuff(Entity &Entity)
 {
   switch (type)
   {
@@ -57,20 +57,20 @@ void Buff::applyBuff(Entity &Entity)
 
 // Entity methods
 
-void Entity::increaseHealth(int value) { hp_ += value; }
-void Entity::increaseAttack(int value) { atk_ += value; }
+inline void Entity::increaseHealth(int value) { hp_ += value; }
+inline void Entity::increaseAttack(int value) { atk_ += value; }
 
-void Entity::Print() const
+inline void Entity::Print() const
 {
   std::cout << hp_ << " " << atk_ << " " << name_ << " " << *description_ << std::endl;
 }
 
-void Entity::Attack(Entity &target)
+inline void Entity::Attack(Entity &target)
 {
   target.hp_ -= atk_;
 }
 
-void Entity::AddBuff(Buff buff)
+inline void Entity::AddBuff(Buff buff)
 {
   buffs_.push_back(buff);
 }

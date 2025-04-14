@@ -8,6 +8,7 @@
 sudo apt-get install libncurses5-dev libncursesw5-dev
 ```
 
+### Билд на Windows
 ```
 g++ main.cpp -o main -lncurses -DNCURSES_STATIC
 ```
