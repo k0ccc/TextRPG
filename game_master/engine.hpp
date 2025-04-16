@@ -1,22 +1,24 @@
 
 #include <iostream>
-#include "../settings/ui_settings.hpp"
 #include <memory>
+#include "interface.hpp"
 
 class Engine
 {
 private:
-  bool isRunning_;
-  std::unique_ptr<UserInterfaceSettings> ui_settings_;
-
-public:
-  Engine();
-  void Run();
-  void InitCurses();
+  void InitInterface();
   void HandleInput();
   void Update();
   void Render();
   void CleanupCurses();
+
+  bool isRunning_;
+
+  std::unique_ptr<Interface> Interface_;
+
+public:
+  Engine();
+  void Run();
 };
 
 
@@ -26,7 +28,7 @@ Engine::Engine(): isRunning_(false){}
 void Engine::Run()
 {
   isRunning_ = true;
-  InitCurses();
+  InitInterface();
   while (isRunning_)
   {
     Update();
@@ -36,9 +38,9 @@ void Engine::Run()
   CleanupCurses();
 }
 
-void Engine::InitCurses()
+void Engine::InitInterface()
 {
-  ui_settings_ = std::make_unique<UserInterfaceSettings>();
+  Interface_ = std::make_unique<Interface>();
 }
 
 void Engine::HandleInput(){
@@ -49,8 +51,8 @@ void Engine::HandleInput(){
   case 'Q':
     isRunning_ = false;
     break;
-  case KEY_UP:
-    // ui_settings_->SetColor(YELLOW);
+  case '1':
+    isRunning_ = false;
     break;
   default:
     break;
@@ -66,11 +68,8 @@ void Engine::Render()
 {
   // Логика отрисовки текста и графики
   erase(); // Очищаем виртуальный экран (аналог clear, но без мерцания)
-  // Используем функции ncurses для вывода в нужных координатах (y, x)
-  ui_settings_->SetColor(0, 0, "--- My text game ---");
-  ui_settings_->SetColor(2, 5, "Current location: Room 1", GREEN);
-  ui_settings_->SetColor(3, 5, "Inv: Empty", YELLOW);
-  // ... вывод карты, лога сообщений ...
+
+  Interface_->ChooseMove();
 
   mvprintw(LINES - 1, 0, "Press (q - quit): "); // LINES - высота экрана
 
