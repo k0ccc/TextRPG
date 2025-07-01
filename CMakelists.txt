@@ -8,5 +8,15 @@ project(TextRPG)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+# Добовляем библиотеку 
+find_library(NCURSES_LIB ncurses REQUIRED)
+
 # Создаем исполняемый файл
 add_executable( TextRPG main.cpp)
+
+# Связываем библиотеку ncurses с исполняемым файлом
+target_link_libraries(TextRPG ${NCURSES_LIB})
+
+# Определяем статическую компиляцию
+add_definitions(-DNCURSES_STATIC)
+
