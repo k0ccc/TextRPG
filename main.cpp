@@ -1,5 +1,5 @@
 
-#include "game_master/engine.hpp"
+#include "game_master/engine.cpp"
 int main()
 {
   Engine engine;
