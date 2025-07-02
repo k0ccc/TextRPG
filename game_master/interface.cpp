@@ -8,14 +8,34 @@ Interface::Interface()
   offset_.previousPositionY = -1;
 }
 
+/**
+ * The RenderLine function in C++ renders text at a specified position with a specified color.
+ * 
+ * @param y The `y` parameter in the `RenderLine` function represents the vertical position where the
+ * text will be rendered on the screen. It specifies the row number where the text will be displayed.
+ * @param x The `x` parameter in the `RenderLine` function represents the horizontal position where the
+ * text will be rendered on the screen. If the value of `x` is set to -1, the function will
+ * automatically calculate the next position based on the length of the text and the previous position.
+ * If
+ * @param text The `text` parameter in the `RenderLine` function is a string that represents the text
+ * that you want to render on the screen at the specified coordinates (y, x). It is the actual content
+ * that will be displayed on the screen at the specified position.
+ * @param color The `color` parameter in the `RenderLine` function is of type `Color` and has a default
+ * value of `Color::WHITE`. This parameter is used to specify the color in which the text will be
+ * rendered on the screen.
+ */
 void Interface::RenderLine(int y, int x, std::string text, Color color = Color::WHITE)
 {
-  if (offset_.previousPositionY != y){
+  int yCoord; 
+  if( y < 0 ){yCoord = LINES + y;}
+  else{yCoord = y;}
+
+  if (offset_.previousPositionY != yCoord){
     offset_.previousPositionX = 0;
-    offset_.previousPositionY = y;
+    offset_.previousPositionY = yCoord;
   }
   attron(COLOR_PAIR(color));
-  mvprintw(y, offset_.previousPositionX, text.c_str());
+  mvprintw(yCoord, offset_.previousPositionX, text.c_str());
   attroff(COLOR_PAIR(color));
   if (x == -1)
   {
@@ -27,17 +47,38 @@ void Interface::RenderLine(int y, int x, std::string text, Color color = Color::
   }
   
 }
+/**
+ * The RMutliLines function iterates through a vector of strings and renders each line with an optional
+ * line number.
+ *
+ * @param lines The `lines` parameter is a vector of strings that contains multiple lines of text. Each
+ * element in the vector represents a single line of text.
+ * @param isCount The `isCount` parameter is a boolean flag that determines whether line numbers should
+ * be displayed along with the text lines. If `isCount` is `true`, line numbers will be displayed
+ * before each line of text. If `isCount` is `false`, only the text lines will be rendered
+ */
+void Interface::RMutliLines(std::vector<std::string> lines, int y, bool isCount, Color color)
+{
+  for (int i = 0; i < lines.size(); i++)
+  {
+    if (!isCount){RenderLine(y, -1, lines[i], color);
+    }else{RenderLine(y, -1, std::to_string(i+1)+ " - " + lines[i], color);}
+  }
+}
 
 void Interface::ChooseMove()
 {
-  RenderLine(LINES - 5, -1, "Attack1", Color::RED);
-  RenderLine(LINES - 5, -1, "Attack1", Color::RED);
-  RenderLine(LINES - 5, -1, "Attack1", Color::RED);
-  RenderLine(LINES - 4, -1, "Attack", Color::RED);
-  RenderLine(LINES - 4, 10, "Talk", Color::GREEN);
-  RenderLine(LINES - 4, 15, "Inventory", Color::YELLOW);
-  RenderLine(LINES - 4, 28, "Run", Color::WHITE);
-}
+  RMutliLines({"Attack1", "Attack2"}, -5, true, Color::RED);
+  RenderLine(-4, -1, "1 - Attack", Color::RED);
+  RenderLine( -4, -1, "2 - Talk", Color::GREEN);
+  RenderLine( -4, -1, "3 - Inventory", Color::YELLOW);
+  RenderLine(-4, -1, "4 - Run", Color::WHITE);
+ }
+
+ void Interface::SystemButtons()
+ {
+   RenderLine(LINES - 1, 0, "Press (q or '0' - quit)"); // LINES - высота экрана
+ }
 
 void Interface::StartRoom() 
 {

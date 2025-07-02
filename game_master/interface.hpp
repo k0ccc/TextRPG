@@ -1,7 +1,5 @@
 #include "../settings/ui_settings.hpp"
-#include <string>
-#include <memory>
-#include <iostream>
+
 // Перенести в save
 struct CurrentState
 {
@@ -21,12 +19,13 @@ class Interface
 {
 private:
   void RenderLine(int y, int x, std::string text, Color color);
-
+  void RMutliLines(std::vector<std::string> lines, int y, bool isCount, Color color);
   std::unique_ptr<UserInterfaceSettings> ui_settings_;
   
 public:
   Interface();
   void ChooseMove();
+  void SystemButtons();
   void StartRoom();
   void Room();
   void FightEnemy();

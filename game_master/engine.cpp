@@ -27,9 +27,7 @@ void Engine::HandleInput()
     {
     case 'q':
     case 'Q':
-        isRunning_ = false;
-        break;
-    case '1':
+    case '0':
         isRunning_ = false;
         break;
     default:
@@ -48,8 +46,7 @@ void Engine::Render()
     erase(); // Очищаем виртуальный экран (аналог clear, но без мерцания)
 
     Interface_->ChooseMove();
-
-    mvprintw(LINES - 1, 0, "Press (q - quit): "); // LINES - высота экрана
+    Interface_->SystemButtons();
 
     refresh(); // Обновляем реальный экран содержимым виртуального
 }

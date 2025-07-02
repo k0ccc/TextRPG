@@ -4,3 +4,8 @@
 #else
 #include <curses.h>
 #endif
+
+#include <string>
+#include <vector>
+#include <memory>
+#include <iostream>
