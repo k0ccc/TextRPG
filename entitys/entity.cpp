@@ -1,6 +1,6 @@
 #include "entity.hpp"
 
-Entity::Entity(int hp, int atk, std::string name, std::string description) : hp_(hp), atk_(atk), name_(name), description_(std::make_unique<std::string>(description)) {}
+Entity::Entity(int hp, int atk, std::string name, std::string description) : hp_(hp), atk_(atk), name_(name), description_(std::make_unique<std::string>(description)), State(StateEntity::Waiting){}
 
 // Buff methods
 
@@ -29,6 +29,7 @@ inline void Entity::Print() const
 
 inline void Entity::Attack(Entity &target)
 {
+  State = StateEntity::Attack;
   target.hp_ -= atk_;
 }
 

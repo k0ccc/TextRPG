@@ -48,16 +48,23 @@ void Interface::RenderLine(int y, int x, std::string text, Color color = Color::
   
 }
 /**
- * The RMutliLines function iterates through a vector of strings and renders each line with an optional
- * line number.
- *
- * @param lines The `lines` parameter is a vector of strings that contains multiple lines of text. Each
- * element in the vector represents a single line of text.
- * @param isCount The `isCount` parameter is a boolean flag that determines whether line numbers should
- * be displayed along with the text lines. If `isCount` is `true`, line numbers will be displayed
- * before each line of text. If `isCount` is `false`, only the text lines will be rendered
+ * The function RMutliLines renders multiple lines with optional line numbering and color at a
+ * specified y-coordinate.
+ * 
+ * @param lines The `lines` parameter is a vector of strings that contains multiple lines of text to be
+ * rendered. Each element in the vector represents a single line of text.
+ * @param y The `y` parameter in the `RMutliLines` function seems to represent the vertical position
+ * where the lines will be rendered on the interface. It likely specifies the y-coordinate or row
+ * number where the lines will be displayed.
+ * @param color The `color` parameter in the `RMutliLines` function is of type `Color`. It is used to
+ * specify the color in which the lines will be rendered on the interface. The `Color` type likely
+ * represents a color value or object that determines the visual appearance of the text or lines
+ * @param isCount The `isCount` parameter in the `RMutliLines` function is a boolean flag that
+ * determines whether line numbers should be displayed along with the text lines. If `isCount` is
+ * `true`, then line numbers will be prepended to each line of text before rendering.
  */
-void Interface::RMutliLines(std::vector<std::string> lines, int y, bool isCount, Color color)
+
+void Interface::RMutliLines(std::vector<std::string> lines, int y, Color color, bool isCount)
 {
   for (int i = 0; i < lines.size(); i++)
   {
@@ -68,7 +75,7 @@ void Interface::RMutliLines(std::vector<std::string> lines, int y, bool isCount,
 
 void Interface::ChooseMove()
 {
-  RMutliLines({"Attack1", "Attack2"}, -5, true, Color::RED);
+  RMutliLines({"Attack1", "Attack2"}, -5, Color::RED, true);
   RenderLine(-4, -1, "1 - Attack", Color::RED);
   RenderLine( -4, -1, "2 - Talk", Color::GREEN);
   RenderLine( -4, -1, "3 - Inventory", Color::YELLOW);
@@ -77,7 +84,7 @@ void Interface::ChooseMove()
 
  void Interface::SystemButtons()
  {
-   RenderLine(LINES - 1, 0, "Press (q or '0' - quit)"); // LINES - высота экрана
+   RenderLine(-1, 0, "Press (q or '0' - quit)"); // LINES - высота экрана
  }
 
 void Interface::StartRoom() 

@@ -19,7 +19,7 @@ class Interface
 {
 private:
   void RenderLine(int y, int x, std::string text, Color color);
-  void RMutliLines(std::vector<std::string> lines, int y, bool isCount, Color color);
+  void RMutliLines(std::vector<std::string> lines, int y, Color color, bool isCount);
   std::unique_ptr<UserInterfaceSettings> ui_settings_;
   
 public:

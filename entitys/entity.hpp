@@ -9,6 +9,14 @@ enum class BuffType
   Attack,
 };
 
+enum class StateEntity
+{
+  Attack,
+  Defence,
+  Talk,
+  Waiting,
+};
+
 struct Buff
 {
   int duration;
@@ -31,6 +39,7 @@ protected:
 
 public:
   Entity(int hp_ = 10, int atk_ = 1, std::string name = "", std::string description = "");
+  StateEntity State;
   void Print() const;
   void Attack(Entity &target);
   void AddBuff(Buff buff);
