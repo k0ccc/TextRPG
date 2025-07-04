@@ -18,11 +18,12 @@ struct Offset{
 class Interface
 {
 private:
-  void RenderLine(int y, int x, std::string text, Color color);
-  void RMutliLines(std::vector<std::string> lines, int y, Color color, bool isCount);
+  void RenderText(int y, int x, std::string text, Color color);
+  void MutliText(std::vector<std::string> lines, int y, Color color, bool isCount);
+  void RenderLine(int y, int x, char symbol, int len);
   std::unique_ptr<UserInterfaceSettings> ui_settings_;
-  
-public:
+
+  public:
   Interface();
   void ChooseMove();
   void SystemButtons();

@@ -2,7 +2,7 @@
 #ifdef _WIN32
 #include <ncurses/ncurses.h>
 #else
-#include <curses.h>
+#include <ncurses.h>
 #endif
 
 #include <string>
